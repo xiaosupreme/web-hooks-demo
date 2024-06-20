@@ -1,28 +1,27 @@
 import React, { useState, useCallback } from 'react';
-import Button from './Button';
+import Todos from './Todos';
 
 const ParentComponent = () => {
     const [count, setCount] = useState(0);
-    const [text, setText] = useState('');
+    const [todos, setTodos] = useState([]);
 
-    // Memoized callback to prevent unnecessary re-renders of Button
-    const increment = useCallback(() => {
-        setCount(prevCount => prevCount + 1);
-    }, []); // No dependencies, so the function is only created once
+    const increment = () => {
+        setCount((c) => c + 1);
+    };
+    const addTodo = useCallback(() => {
+        setTodos((t) => [...t, "New Todo"]);
+    }, [todos]);
 
-    console.log('parent rendered');
+    console.log("parent render");
     return (
-        <div>
-            <h2>useCallback Example</h2>
-            <p>Count: {count}</p>
-            <Button onClick={increment}>Increment Count</Button>
-            <input
-                type="text"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Type something"
-            />
-        </div>
+        <>
+            <Todos todos={todos} addTodo={addTodo} />
+            <hr />
+            <div>
+                Count: {count}
+                <button onClick={increment}>+</button>
+            </div>
+        </>
     );
 };
 
